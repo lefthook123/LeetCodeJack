@@ -1,0 +1,89 @@
+/*
+226. Invert Binary Tree
+
+Invert a binary tree.
+
+     4
+   /   \
+  2     7
+ / \   / \
+1   3 6   9
+
+to
+
+     4
+   /   \
+  7     2
+ / \   / \
+9   6 3   1
+
+*/
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+
+ //dfs recursive
+public class Solution {
+    public TreeNode InvertTree(TreeNode root) {
+        if(root==null)return root;
+        TreeNode left = InvertTree(root.left);
+        TreeNode right = InvertTree(root.right);
+        root.left=right;
+        root.right=left;
+        return root;
+    }
+}
+
+
+
+
+//dfs using stack 
+public class Solution {
+    public TreeNode InvertTree(TreeNode root) {
+        if(root==null)return root;
+        Stack<TreeNode> st = new Stack<TreeNode>();
+        st.Push(root);
+        
+        while(st.Count>0){
+            TreeNode tn = st.Pop();
+            TreeNode left = tn.left;
+            tn.left=tn.right;
+            tn.right=left;
+            if(tn.left!=null){
+                st.Push(tn.left);
+            }
+            if(tn.right!=null){
+                st.Push(tn.right);
+            }
+        }
+        return root;
+    }
+}
+
+//bfs
+public class Solution {
+    public TreeNode InvertTree(TreeNode root) {
+        if(root==null)return root;
+        Queue<TreeNode> q = new Queue<TreeNode>();
+        q.Enqueue(root);
+        
+        while(q.Count>0){
+            TreeNode tn = q.Dequeue();
+            TreeNode left=tn.left;
+            tn.left=tn.right;
+            tn.right=left;
+            if(tn.left!=null)q.Enqueue(tn.left);
+            if(tn.right!=null)q.Enqueue(tn.right);
+        }
+        return root;
+        
+    }
+}

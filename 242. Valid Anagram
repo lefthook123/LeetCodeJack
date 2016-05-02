@@ -1,0 +1,38 @@
+/*
+242. Valid Anagram
+
+Given two strings s and t, write a function to determine if t is an anagram of s.
+
+For example,
+s = "anagram", t = "nagaram", return true.
+s = "rat", t = "car", return false.
+
+Note:
+You may assume the string contains only lowercase alphabets.
+
+Follow up:
+What if the inputs contain unicode characters? How would you adapt your solution to such case?
+*/
+
+
+public class Solution {
+    public bool IsAnagram(string s, string t) {
+        if(s.Length!=t.Length)return false;
+        Dictionary<char,int> dict = new Dictionary<char,int>();
+        for(int i=0;i<s.Length;i++){
+            if(!dict.ContainsKey(s[i])){
+                dict[s[i]]=1;
+            }else{
+                dict[s[i]]+=1;
+                if(dict[s[i]]==0)dict.Remove(s[i]);
+            }
+            if(!dict.ContainsKey(t[i])){
+                dict[t[i]]=-1;
+            }else{
+                dict[t[i]]-=1;
+                if(dict[t[i]]==0)dict.Remove(t[i]);
+            }
+        }
+        return dict.Count==0;
+    }
+}

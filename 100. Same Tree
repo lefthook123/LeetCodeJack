@@ -1,0 +1,72 @@
+/*
+100. Same Tree
+
+Given two binary trees, write a function to check if they are equal or not.
+
+Two binary trees are considered equal if they are structurally identical and the nodes have the same value.
+*/
+
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+
+
+ //dfs recursive
+public class Solution {
+    public bool IsSameTree(TreeNode p, TreeNode q) {
+        if(p==null&&q==null)return true;
+        if(p==null||q==null)return false;
+        return IsSameTree(p.left,q.left)&&IsSameTree(p.right,q.right)&&p.val==q.val;
+    }
+}
+
+//DFS stack
+public class Solution {
+    public bool IsSameTree(TreeNode p, TreeNode q) {
+        Stack<TreeNode> stp = new Stack<TreeNode>();
+        Stack<TreeNode> stq = new Stack<TreeNode>();
+        
+        stp.Push(p); stq.Push(q);
+        
+        while(stp.Count>0){
+            TreeNode tp = stp.Pop();
+            TreeNode tq = stq.Pop();
+            if(tp==null&&tq==null)continue;
+            if(tp==null||tq==null)return false;
+            if(tp.val!=tq.val)return false;
+            stp.Push(tp.left);stp.Push(tp.right);
+            stq.Push(tq.left);stq.Push(tq.right);
+        }
+        return true;
+    }
+}
+
+
+//BFS
+public class Solution {
+    public bool IsSameTree(TreeNode p, TreeNode q) {
+        Queue<TreeNode> stp = new Queue<TreeNode>();
+        Queue<TreeNode> stq = new Queue<TreeNode>();
+        
+        stp.Enqueue(p); stq.Enqueue(q);
+        
+        while(stp.Count>0){
+            TreeNode tp = stp.Dequeue();
+            TreeNode tq = stq.Dequeue();
+            if(tp==null&&tq==null)continue;
+            if(tp==null||tq==null)return false;
+            if(tp.val!=tq.val)return false;
+            stp.Enqueue(tp.left);stp.Enqueue(tp.right);
+            stq.Enqueue(tq.left);stq.Enqueue(tq.right);
+        }
+        return true;
+    }
+}

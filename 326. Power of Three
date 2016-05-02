@@ -1,0 +1,33 @@
+/*
+326. Power of Three
+
+Given an integer, write a function to determine if it is a power of three.
+
+Follow up:
+Could you do it without using any loop / recursion?
+*/
+
+
+public class Solution {
+    public bool IsPowerOfThree(int n) {
+        int num = 1;
+        HashSet<int> ht = new HashSet<int>();
+        while(num>0){
+            ht.Add(num);
+            num*=3;
+        }
+        return ht.Contains(n);
+    }
+}
+
+
+public class Solution {
+    public bool IsPowerOfThree(int n) {
+        if(n<1)return false;
+        while(n!=1){
+            if(n%3!=0)return false;
+            n/=3;
+        }
+        return true;
+    }
+}

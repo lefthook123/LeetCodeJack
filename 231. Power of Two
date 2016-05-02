@@ -1,0 +1,35 @@
+/*
+231. Power of Two
+
+Given an integer, write a function to determine if it is a power of two.
+
+*/
+
+
+public class Solution {
+    public bool IsPowerOfTwo(int n) {
+        int count =0;
+        int helper = 1;
+        while(n!=0){
+            if((n&helper)==1){
+                count++;
+                if(count>1)return false;
+            }
+            n>>=1;
+        }
+        return count==1;
+    }
+}
+
+
+public class Solution {
+    public bool IsPowerOfTwo(int n) {
+        
+        if(n<1)return false;
+        while(n!=1){
+            if(n%2!=0)return false;
+            n/=2;
+        }
+        return true;
+    }
+}
