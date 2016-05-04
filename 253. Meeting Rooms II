@@ -1,0 +1,43 @@
+253. Meeting Rooms II
+
+Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), find the minimum number of conference rooms required.
+
+For example,
+Given [[0, 30],[5, 10],[15, 20]],
+return 2.
+
+
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     public int start;
+ *     public int end;
+ *     public Interval() { start = 0; end = 0; }
+ *     public Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+public class Solution {
+    public int MinMeetingRooms(Interval[] intervals) {
+        if(intervals.Length<=1)return intervals.Length;
+        List<int> startTimes = new List<int>();
+        List<int> endTimes = new List<int>();
+        for(int i=0;i<intervals.Length;i++){
+            startTimes.Add(intervals[i].start);
+            endTimes.Add(intervals[i].end);
+        }
+        startTimes.Sort();
+        endTimes.Sort();
+        int si = 1;
+        int se = 0;
+        int counter = 1;
+        int max = 1;
+        while(si<startTimes.Count){
+            if(startTimes[si]>=endTimes[se]){
+                se++;counter--;
+            }else{
+                si++;max=Math.Max(max,++counter);
+            }
+        }
+        return max;
+    }
+}

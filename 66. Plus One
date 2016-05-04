@@ -1,0 +1,33 @@
+/*
+66. Plus One
+
+Given a non-negative number represented as an array of digits, plus one to the number.
+
+The digits are stored such that the most significant digit is at the head of the list.
+*/
+
+
+public class Solution {
+    public int[] PlusOne(int[] digits) {
+        int[] result = new int[digits.Length];
+        int i=digits.Length-1;
+        for(;i>=0;i--){
+            if(digits[i]==9){
+                result[i]=0;
+            }else{
+                result[i]=digits[i]+1;
+                break;
+            }
+        }
+        if(i==-1){
+            int[] result2 = new int[digits.Length+1];
+            result2[0]=1;
+            return result2;
+        }
+        i--;
+        for(;i>=0;i--){
+            result[i]=digits[i];
+        }
+        return result;
+    }
+}

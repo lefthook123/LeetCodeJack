@@ -1,0 +1,37 @@
+/*
+110. Balanced Binary Tree
+
+Given a binary tree, determine if it is height-balanced.
+
+For this problem, a height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of every node never differ by more than 1.
+*/
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public bool IsBalanced(TreeNode root) {
+        int[] h = new int[1]; //stores the max depth of a tree
+        return IsBalanced(root,h);
+    }
+    public bool IsBalanced(TreeNode root ,int[] h) {
+        if(root==null){
+            h[0]=0;return true;
+        }
+        if(!IsBalanced(root.left,h))return false;
+        int lefthigh=h[0];
+        if(!IsBalanced(root.right,h))return false;
+        int righthigh=h[0];
+        int high = Math.Max(lefthigh,righthigh);
+        if(high-lefthigh>1||high-righthigh>1)return false;
+        h[0]=high+1;
+        return true;
+    }
+}

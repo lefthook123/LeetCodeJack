@@ -1,0 +1,70 @@
+224. Basic Calculator
+
+Implement a basic calculator to evaluate a simple expression string.
+
+The expression string may contain open ( and closing parentheses ), the plus + or minus sign -, non-negative integers and empty spaces .
+
+You may assume that the given expression is always valid.
+
+Some examples:
+"1 + 1" = 2
+" 2-1 + 2 " = 3
+"(1+(4+5+2)-3)+(6+8)" = 23
+
+
+
+public class Solution {
+    public int Calculate(string s) {
+        int i=0;
+        Stack<int> st1 = new Stack<int>();
+        Stack<char> st2 = new Stack<char>();
+        while(i<s.Length){
+            if(s[i]==' '){
+               i++;continue; 
+            }
+            else if(s[i]>='0'&&s[i]<='9'){
+                int num = 0;
+                while(i<s.Length&&s[i]>='0'&&s[i]<='9'){
+                    num=num*10+(s[i++]-'0');
+                }
+                if(st2.Count==0||st2.Peek()=='('){
+                    st1.Push(num);
+                }else{
+                    char op = st2.Pop();
+                    if(op=='+'){
+                        st1.Push(st1.Pop()+num);
+                    }else{
+                        st1.Push(st1.Pop()-num);
+                    }
+                }
+            }else if(s[i]=='+'||s[i]=='-'||s[i]=='('){
+                st2.Push(s[i++]);
+            }else if(s[i]==')'){
+                while(st2.Peek()!='('){
+                    char op = st2.Pop();
+                    int right = st1.Pop();
+                    int left = st1.Pop();
+                    if(op=='+'){
+                        st1.Push(right+left);
+                    }else{
+                        st1.Push(left-right);
+                    }
+                }
+                st2.Pop();
+                while(st2.Count>0&&st2.Peek()!='('){
+                    char op = st2.Pop();
+                    int right = st1.Pop();
+                    int left = st1.Pop();
+                    if(op=='+'){
+                        st1.Push(right+left);
+                    }else{
+                        st1.Push(left-right);
+                    }
+                }
+                i++;
+            }
+        }
+        
+        return st1.Peek();
+    }
+}
