@@ -1,0 +1,33 @@
+228. Summary Ranges
+
+Given a sorted integer array without duplicates, return the summary of its ranges.
+
+For example, given [0,1,2,4,5,7], return ["0->2","4->5","7"].
+
+
+
+public class Solution {
+    public IList<string> SummaryRanges(int[] nums) {
+        IList<string> result = new List<string>();
+        if(nums.Length==0)return result;
+        int slow = 0;
+        int fast = 1;
+        while(fast<nums.Length){
+            if(nums[fast]!=nums[fast-1]+1){
+                if(fast==slow+1){
+                    result.Add(nums[slow].ToString());
+                }else{
+                    result.Add(nums[slow].ToString()+"->"+nums[fast-1].ToString());
+                }
+                slow=fast;
+            }
+            fast++;
+        }
+        if(fast==slow+1){
+            result.Add(nums[slow].ToString());
+        }else{
+            result.Add(nums[slow].ToString()+"->"+nums[fast-1].ToString());
+        }
+        return result;
+    }
+}

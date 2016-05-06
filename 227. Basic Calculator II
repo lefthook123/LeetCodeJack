@@ -10,3 +10,69 @@ Some examples:
 "3+2*2" = 7
 " 3/2 " = 1
 " 3+5 / 2 " = 5
+
+
+
+
+public class Solution {
+    public int Calculate(string s) {
+        Stack<int> numst = new Stack<int>();
+        Stack<char> opst = new Stack<char>();
+        
+        int i=0;
+        
+        while(i<s.Length){
+            if(s[i]==' '){
+                i++;continue;
+            }else if(s[i]>='0'&&s[i]<='9'){
+                int num=0;
+                while(i<s.Length&&s[i]>='0'&&s[i]<='9'){
+                    num=num*10+(s[i++]-'0');
+                }
+                numst.Push(num);
+            }else if(s[i]=='/'||s[i]=='*'){
+                while(opst.Count>0&&(opst.Peek()=='*'||opst.Peek()=='/')){
+                    int right = numst.Pop();
+                    int left = numst.Pop();
+                    char op = opst.Pop();
+                    numst.Push(calc(left,right,op));
+                }
+                opst.Push(s[i++]);
+            }else{
+                while(opst.Count>0){
+                    int right = numst.Pop();
+                    int left = numst.Pop();
+                    char op = opst.Pop();
+                    numst.Push(calc(left,right,op));
+                }
+                opst.Push(s[i++]);
+            }
+            
+        }
+        while(opst.Count>0){
+            int right = numst.Pop();
+            int left = numst.Pop();
+            char op = opst.Pop();
+            numst.Push(calc(left,right,op));
+        }
+        return numst.Peek();
+
+        
+        
+        
+    }
+    
+    public int calc(int left,int right,char op){
+        switch(op){
+            case '+':
+                return left+right;
+            case '-':
+                return left-right;
+            case '*':
+                return left*right;
+            case '/':
+                return left/right;
+        }
+        return -1;
+    }
+}

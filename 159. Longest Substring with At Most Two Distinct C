@@ -1,0 +1,68 @@
+159. Longest Substring with At Most Two Distinct Characters
+
+Given a string, find the length of the longest substring T that contains at most 2 distinct characters.
+
+For example, Given s = “eceba”,
+
+T is "ece" which its length is 3.
+
+
+public class Solution {
+    public int LengthOfLongestSubstringTwoDistinct(string s) {
+        int last1=0;char c1='\0';
+        int last2=0;char c2='\0';
+        int len=0;int max=0;
+        for(int i=0;i<s.Length;i++){
+            if(s[i]==c1){
+                len++;last1=i;max=max>len?max:len;
+            }else if(s[i]==c2){
+                len++;last2=i;max=max>len?max:len;
+            }else{
+                if(c1=='\0'){
+                    c1=s[i];last1=i;len++;max=max>len?max:len;
+                }else if(c2=='\0'){
+                    c2=s[i];last2=i;len++;max=max>len?max:len;
+                }else{
+                    if(last1<last2){
+                        c1=s[i];len=i-last1;last1=i;
+                    }else{
+                        c2=s[i];len=i-last2;last2=i;
+                    }
+                }
+            }
+        }
+        return max;
+        
+    }
+}
+
+
+public class Solution {
+    public int LengthOfLongestSubstringKDistinct(string s, int k) {
+        Dictionary<char,int> dict = new Dictionary<char,int>();
+        int len = 0;int max=0;
+        for(int i=0;i<s.Length;i++){
+            if(dict.ContainsKey(s[i])){
+                len++;dict[s[i]]=i;max=max>len?max:len;
+            }else{
+                if(dict.Count<k){
+                    dict[s[i]]=i;
+                    len++;
+                    max=max>len?max:len;
+                }else{
+                    int min=s.Length;char minKey = '\0';
+                    foreach(var item in dict){
+                        if(item.Value<min){
+                            min=item.Value;
+                            minKey=item.Key;
+                        }
+                    }
+                    len=i-min;
+                    dict.Remove(minKey);
+                    dict[s[i]]=i;
+                }
+            }
+        }
+        return max;
+    }
+}
