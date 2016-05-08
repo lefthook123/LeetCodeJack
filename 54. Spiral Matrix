@@ -11,3 +11,42 @@ Given the following matrix:
  [ 7, 8, 9 ]
 ]
 You should return [1,2,3,6,9,8,7,4,5].
+
+
+
+public class Solution {
+    public IList<int> SpiralOrder(int[,] matrix) {
+        int m = matrix.GetLength(0);
+        int n = matrix.GetLength(1);
+        IList<int> res = new List<int>();
+        
+        int top=0,bot=m-1,left=0,right=n-1;
+        
+        while(top<=bot&&left<=right){
+            for(int i=left;i<=right;i++){
+                res.Add(matrix[top,i]);
+            }
+            top++;
+            for(int i=top;i<=bot;i++){
+                res.Add(matrix[i,right]);
+            }
+            right--;
+            if(top<=bot){
+                for(int i=right;i>=left;i--){
+                    res.Add(matrix[bot,i]);
+                }
+                bot--;
+            }
+            if(left<=right){
+                for(int i=bot;i>=top;i--){
+                    res.Add(matrix[i,left]);
+                }
+                left++;
+            }
+            
+        }
+        return res;
+        
+        
+    }
+}

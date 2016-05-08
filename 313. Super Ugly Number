@@ -1,0 +1,35 @@
+313. Super Ugly Number
+
+Write a program to find the nth super ugly number.
+
+Super ugly numbers are positive numbers whose all prime factors are in the given prime list primes of size k. For example, [1, 2, 4, 7, 8, 13, 14, 16, 19, 26, 28, 32] is the sequence of the first 12 super ugly numbers given primes = [2, 7, 13, 19] of size 4.
+
+Note:
+(1) 1 is a super ugly number for any given primes.
+(2) The given numbers in primes are in ascending order.
+(3) 0 < k ≤ 100, 0 < n ≤ 106, 0 < primes[i] < 1000.
+
+
+
+public class Solution {
+    public int NthSuperUglyNumber(int n, int[] primes) {
+        List<int> result = new List<int>{1};
+        SortedDictionary<int,int> sd = new SortedDictionary<int,int>();
+        for(int i=0;i<primes.Length;i++){
+            sd.Add(primes[i],0);
+        }
+        while(result.Count<n){
+            int num=sd.First().Key;
+            int pos=sd.First().Value;
+            sd.Remove(num);
+            result.Add(num);
+            int factor = num/result[pos];
+            int i = pos+1;
+            while(sd.ContainsKey(result[i]*factor))i++;
+            if(result[i]*factor>0){
+                sd.Add(result[i]*factor,i);
+            }
+        }
+        return result[n-1];
+    }
+}

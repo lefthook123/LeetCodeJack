@@ -1,0 +1,56 @@
+23. Merge k Sorted Lists
+
+Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode MergeKLists(ListNode[] lists) {
+        SortedDictionary<int,List<ListNode>> sd = new SortedDictionary<int,List<ListNode>>();
+        for(int i=0;i<lists.Length;i++){
+            if(lists[i]!=null){
+                if(!sd.ContainsKey(lists[i].val)){
+                    sd[lists[i].val]=new List<ListNode>();
+                }
+                ListNode ln = lists[i];
+                int prev = ln.val;
+                while(ln!=null&&ln.val==prev){
+                    sd[ln.val].Add(ln);
+                    ln=ln.next;
+                }
+                
+            }
+        }
+        ListNode dummy = new ListNode(-1);
+        ListNode curr = dummy;
+        while(sd.Count>0){
+            List<ListNode> nodes = sd.First().Value;
+            foreach(ListNode node in nodes){
+                curr.next = node;
+                curr=curr.next;
+                if(node.next!=null&&node.next.val!=node.val){
+                    if(!sd.ContainsKey(node.next.val)){
+                        sd[node.next.val]=new List<ListNode>();
+                    }
+                    ListNode ln = node.next;
+                    int prev = ln.val;
+                    while(ln!=null&&ln.val==prev){
+                        sd[ln.val].Add(ln);
+                        ln=ln.next;
+                    }
+                    
+                }
+                
+            }
+            sd.Remove(sd.First().Key);
+        }
+        return dummy.next;
+    }
+}

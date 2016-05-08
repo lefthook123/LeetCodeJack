@@ -1,0 +1,56 @@
+146. LRU Cache
+
+Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: get and set.
+
+get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
+set(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.
+
+
+
+public class LRUCache {
+    
+    public class Node{
+        public int key{get;set;}
+        public int value{get;set;}
+        public Node(int k,int v){
+            key=k;value=v;
+        }
+    }
+    public LinkedList<Node> lst{get;set;}
+    public int size{get;set;}
+    public Dictionary<int,LinkedListNode<Node>> dict{get;set;}
+    
+    public LRUCache(int capacity) {
+        lst = new LinkedList<Node>();
+        size = capacity;
+        dict = new Dictionary<int,LinkedListNode<Node>>();
+    }
+
+    public int Get(int key) {
+        if(!dict.ContainsKey(key))return -1;
+        LinkedListNode<Node> lstNode = dict[key];
+        lst.Remove(lstNode);
+        lst.AddFirst(lstNode);
+        return lstNode.Value.value;
+    }
+
+    public void Set(int key, int value) {
+        if(dict.ContainsKey(key)){
+            LinkedListNode<Node> lstNode = dict[key];
+            lst.Remove(lstNode);
+            lstNode.Value.value=value;
+            lst.AddFirst(lstNode);
+        }else{
+            if(size==lst.Count){
+                LinkedListNode<Node> last = lst.Last;
+                dict.Remove(last.Value.key);
+                lst.RemoveLast();
+            }
+            LinkedListNode<Node> lstnode = new LinkedListNode<Node>(new Node(key,value));
+            dict[key]=lstnode;
+            lst.AddFirst(lstnode);
+        }
+        
+        
+    }
+}

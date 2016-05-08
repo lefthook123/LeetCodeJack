@@ -1,0 +1,49 @@
+39. Combination Sum
+
+Given a set of candidate numbers (C) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.
+
+The same repeated number may be chosen from C unlimited number of times.
+
+Note:
+All numbers (including target) will be positive integers.
+Elements in a combination (a1, a2, … , ak) must be in non-descending order. (ie, a1 ≤ a2 ≤ … ≤ ak).
+The solution set must not contain duplicate combinations.
+For example, given candidate set 2,3,6,7 and target 7, 
+A solution set is: 
+[7] 
+[2, 2, 3] 
+
+
+
+public class Solution {
+    public IList<IList<int>> CombinationSum(int[] candidates, int target) {
+        Array.Sort(candidates);
+        IList<int> temp = new List<int>();
+        IList<IList<int>> result = new List<IList<int>>();
+        
+        backtracking(result,candidates,0,target,temp,0);
+        return result;
+        
+    }
+    
+    //curr: next available position
+    public void backtracking(IList<IList<int>> result,int[] candidates,int sum,int target,IList<int> temp,int curr){
+        if(sum==target){
+            result.Add(new List<int>(temp));return;
+        }
+        if(sum>target){
+            return;
+        }
+        for(int i=curr;i<candidates.Length;i++){
+            
+            temp.Add(candidates[i]);
+            backtracking(result,candidates,sum+candidates[i],target,temp,i);
+            temp.RemoveAt(temp.Count-1);
+            
+            
+        }
+        
+        
+        
+    }
+}
