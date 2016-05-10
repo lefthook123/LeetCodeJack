@@ -14,3 +14,34 @@ Given the below binary tree and sum = 22,
         7    2      1
 return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
 */
+
+
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public bool HasPathSum(TreeNode root, int sum) {
+        if(root==null)return false;
+        return HashPathSum(root,0,sum);
+    }
+    
+    
+    public bool HashPathSum(TreeNode curr,int currsum,int sum){
+        if(curr.left==null&&curr.right==null){
+            return (currsum+curr.val)==sum;
+        }
+        
+        if(curr.left!=null&&HashPathSum(curr.left,currsum+curr.val,sum))return true;
+        if(curr.right!=null&&HashPathSum(curr.right,currsum+curr.val,sum))return true;
+        return false;
+        
+    }
+}

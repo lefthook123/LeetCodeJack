@@ -1,0 +1,37 @@
+20. Valid Parentheses
+
+
+Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+The brackets must close in the correct order, "()" and "()[]{}" are all valid but "(]" and "([)]" are not.
+
+
+public class Solution {
+    public bool IsValid(string s) {
+        Stack<char> st = new Stack<char>();
+        
+        for(int i=0;i<s.Length;i++){
+            if(s[i]=='('||s[i]=='['||s[i]=='{'){
+                st.Push(s[i]);
+            }else{
+                
+                if(st.Count==0)return false;
+                if(s[i]==')'){
+                    if(st.Peek()!='(')return false;
+                    st.Pop();
+                }
+                if(s[i]==']'){
+                    if(st.Peek()!='[')return false;
+                    st.Pop();
+                }
+                if(s[i]=='}'){
+                    if(st.Peek()!='{')return false;
+                    st.Pop();
+                }
+                
+            }
+        }
+        return st.Count==0;
+        
+    }
+}

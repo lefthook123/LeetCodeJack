@@ -1,0 +1,48 @@
+261. Graph Valid Tree
+
+
+Given n nodes labeled from 0 to n - 1 and a list of undirected edges (each edge is a pair of nodes), write a function to check whether these edges make up a valid tree.
+
+For example:
+
+Given n = 5 and edges = [[0, 1], [0, 2], [0, 3], [1, 4]], return true.
+
+Given n = 5 and edges = [[0, 1], [1, 2], [2, 3], [1, 3], [1, 4]], return false.
+
+Show Hint 
+Note: you can assume that no duplicate edges will appear in edges. Since all edges are undirected, [0, 1] is the same as [1, 0] and thus will not appear together in edges.
+
+Show Company Tags
+Show Tags
+Show Similar Problems
+
+
+
+public class Solution {
+    public bool ValidTree(int n, int[,] edges) {
+        List<HashSet<int>> lst = new List<HashSet<int>>();
+        HashSet<int> visited = new HashSet<int>();
+        for(int i=0;i<n;i++){
+            lst.Add(new HashSet<int>());
+        }
+        for(int i=0;i<edges.GetLength(0);i++){
+            lst[edges[i,0]].Add(edges[i,1]);lst[edges[i,1]].Add(edges[i,0]);
+        }
+        if(dfs(lst,visited,0,-1))return false;
+        for(int i=0;i<n;i++){
+            if(!visited.Contains(i))return false;
+        }
+        return true;
+    }
+    //check if there is a cycle in the undirected graph
+    //helper: 2: visited in current cycle     
+    public bool dfs(List<HashSet<int>> lst,HashSet<int> visited,int curr,int parent){
+        if(visited.Contains(curr))return true;
+        visited.Add(curr);
+        foreach(int nb in lst[curr]){
+            if(nb==parent)continue;
+            if(dfs(lst,visited,nb,curr))return true;
+        }
+        return false;
+    }
+}

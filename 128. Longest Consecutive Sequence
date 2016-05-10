@@ -1,0 +1,61 @@
+128. Longest Consecutive Sequence
+
+Given an unsorted array of integers, find the length of the longest consecutive elements sequence.
+
+For example,
+Given [100, 4, 200, 1, 3, 2],
+The longest consecutive elements sequence is [1, 2, 3, 4]. Return its length: 4.
+
+Your algorithm should run in O(n) complexity.
+
+
+public class Solution {
+    public int LongestConsecutive(int[] nums) {
+        
+        //key: number
+        //value: the length
+        Dictionary<int,int> dict = new Dictionary<int,int>();
+        
+        
+        for(int i=0;i<nums.Length;i++){
+            
+            if(dict.ContainsKey(nums[i]))continue;
+            if(!dict.ContainsKey(nums[i]+1)&&!dict.ContainsKey(nums[i]-1)){
+                dict[nums[i]]=1;
+            }
+            
+            
+            if(dict.ContainsKey(nums[i]+1)&&!dict.ContainsKey(nums[i]-1)){
+                int right = dict[nums[i]+1];
+                dict[nums[i]]=right+1;
+                dict[nums[i]+right]=right+1;
+            }
+            
+            if(!dict.ContainsKey(nums[i]+1)&&dict.ContainsKey(nums[i]-1)){
+                int left = dict[nums[i]-1];
+                dict[nums[i]]=left+1;
+                dict[nums[i]-left]=left+1;
+            }
+            
+            if(dict.ContainsKey(nums[i]+1)&&dict.ContainsKey(nums[i]-1)){
+                int right = dict[nums[i]+1];
+                int left = dict[nums[i]-1];
+                
+                dict[nums[i]]=right+left+1;
+                dict[nums[i]+right]=right+left+1;
+                dict[nums[i]-left]=right+left+1;
+                
+            }
+            
+            
+        }
+        int max = 0;
+        foreach(var item in dict){
+            if(item.Value>max){
+                max=item.Value;
+            }
+        }
+        return max;
+        
+    }
+}

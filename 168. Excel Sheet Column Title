@@ -12,3 +12,16 @@ For example:
     26 -> Z
     27 -> AA
     28 -> AB 
+
+
+public class Solution {
+    public string ConvertToTitle(int n) {
+        string res="";
+        while(n>0){
+            int m = (n-1)%26;
+            res = Convert.ToChar(m+'A').ToString()+res;
+            n=(n-1)/26;
+        }
+        return res;
+    }
+}
