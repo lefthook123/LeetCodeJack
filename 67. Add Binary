@@ -1,0 +1,39 @@
+67. Add Binary
+
+Given two binary strings, return their sum (also a binary string).
+
+For example,
+a = "11"
+b = "1"
+Return "100".
+
+Show Company Tags
+Show Tags
+Show Similar Problems
+
+
+public class Solution {
+    public string AddBinary(string a, string b) {
+        StringBuilder sb = new StringBuilder();
+        
+        int m = a.Length-1;
+        int n = b.Length-1;
+        int sum = 0;
+        while(m>=0||n>=0){
+            sum/=2;
+            if(m>=0){
+                sum+=a[m--]-'0';
+            }
+            if(n>=0){
+                sum+=b[n--]-'0';
+            }
+            sb.Append(sum%2);
+        }
+        if(sum>=2){
+            sb.Append(1);
+        }
+        char[] arr = sb.ToString().ToCharArray();
+        Array.Reverse(arr);
+        return new string(arr);
+    }
+}

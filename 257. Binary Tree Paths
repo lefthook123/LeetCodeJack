@@ -1,0 +1,94 @@
+257. Binary Tree Paths
+
+Given a binary tree, return all root-to-leaf paths.
+
+For example, given the following binary tree:
+
+   1
+ /   \
+2     3
+ \
+  5
+All root-to-leaf paths are:
+
+["1->2->5", "1->3"]
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+
+ //Backtracking
+public class Solution {
+    public IList<string> BinaryTreePaths(TreeNode root) {
+        IList<string> result = new List<string>();
+        StringBuilder sb = new StringBuilder();
+        if(root==null)return result;
+        dfs(root,sb,result);
+        return result;
+        
+    }
+    public void dfs(TreeNode root,StringBuilder sb,IList<string> result){
+        int len = root.val.ToString().Length;
+        if(root.left==null&&root.right==null){
+            sb.Append(root.val);
+            result.Add(sb.ToString());
+            sb.Length-=len;
+            return;
+        }
+        sb.Append(root.val);
+        sb.Append("->");
+        if(root.left!=null){
+            dfs(root.left,sb,result);
+        }
+        if(root.right!=null){
+            dfs(root.right,sb,result);
+        }
+        sb.Length-=(len+2);
+        
+    }
+}
+
+
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public IList<string> BinaryTreePaths(TreeNode root) {
+        IList<string> result = new List<string>();
+        if(root==null)return result;
+        dfs(root,"",result);
+        return result;
+        
+    }
+    public void dfs(TreeNode root,string str,IList<string> result){
+        if(root.left==null&&root.right==null){
+            str+=root.val.ToString();
+            result.Add(str);
+            return;
+        }
+        str+=root.val.ToString();
+        str+="->";
+        if(root.left!=null){
+            dfs(root.left,str,result);
+        }
+        if(root.right!=null){
+            dfs(root.right,str,result);
+        }
+        
+    }
+}

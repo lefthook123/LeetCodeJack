@@ -1,0 +1,28 @@
+204. Count Primes
+
+Count the number of prime numbers less than a non-negative number, n.
+
+
+public class Solution {
+    public int CountPrimes(int n) {
+        
+        int count=0;
+        
+        bool[] arr = new bool[n];
+        
+        
+        for(int i=2;i<arr.Length;i++){
+            if(arr[i]==false){
+                count++;
+                int k=i;
+                while(k<n){
+                    arr[k]=true;
+                    k+=i;
+                }
+            }
+        }
+        return count;
+        
+        
+    }
+}
