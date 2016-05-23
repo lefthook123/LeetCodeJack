@@ -1,0 +1,68 @@
+311. Sparse Matrix Multiplication
+
+
+Given two sparse matrices A and B, return the result of AB.
+
+You may assume that A's column number is equal to B's row number.
+
+Example:
+
+A = [
+  [ 1, 0, 0],
+  [-1, 0, 3]
+]
+
+B = [
+  [ 7, 0, 0 ],
+  [ 0, 0, 0 ],
+  [ 0, 0, 1 ]
+]
+
+
+     |  1 0 0 |   | 7 0 0 |   |  7 0 0 |
+AB = | -1 0 3 | x | 0 0 0 | = | -7 0 3 |
+                  | 0 0 1 |
+
+
+
+
+public class Solution {
+    public int[,] Multiply(int[,] A, int[,] B) {
+        int m = A.GetLength(0);
+        int n = A.GetLength(1);
+        int p = B.GetLength(1);
+        HashSet<int> htA = new HashSet<int>();
+        HashSet<int> htB = new HashSet<int>();
+        for(int i=0;i<m;i++){
+            bool set=true;
+            for(int j=0;j<n;j++){
+                if(A[i,j]!=0){
+                    set=false;break;
+                }
+            }
+            if(set)htA.Add(i);
+        }
+        for(int i=0;i<p;i++){
+            bool set=true;
+            for(int j=0;j<n;j++){
+                if(B[j,i]!=0){
+                    set=false;break;
+                }
+            }
+            if(set)htB.Add(i);
+        }
+        int[,] res = new int[m,p];
+        for(int i=0;i<m;i++){
+            if(htA.Contains(i))continue;
+            for(int j=0;j<p;j++){
+                if(htB.Contains(j))continue;
+                int sum=0;
+                for(int k=0;k<n;k++){
+                    sum+=A[i,k]*B[k,j];
+                }
+                res[i,j]=sum;
+            }
+        }
+        return res;
+    }
+}
