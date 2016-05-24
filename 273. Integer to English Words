@@ -1,0 +1,42 @@
+273. Integer to English Words
+
+Convert a non-negative integer to its english words representation. Given input is guaranteed to be less than 231 - 1.
+
+For example,
+123 -> "One Hundred Twenty Three"
+12345 -> "Twelve Thousand Three Hundred Forty Five"
+1234567 -> "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
+
+
+
+public class Solution {
+    
+    string[] lessThanTwenty = new string[]{"","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten",
+        "Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen","Twenty"
+    };
+    string[] lessThanHundred = new string[]{"","Ten","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"};
+    string[] Thousands = new string[]{"","Thousand","Million","Billion"};
+    
+    public string NumberToWords(int num) {
+        if(num==0)return "Zero";
+        string str = "";
+        int i=0;
+        while(num>0){
+            if(num%1000!=0){
+                str = getNumber(num%1000)+Thousands[i]+" "+str;
+            }
+            i++;
+            num/=1000;
+        }
+        return str.Trim();
+        
+    }
+    
+    public string getNumber(int num){
+        if(num==0)return "";
+        if(num<=20)return lessThanTwenty[num]+" ";
+        if(num<100)return lessThanHundred[num/10]+" "+getNumber(num%10);
+        return lessThanTwenty[num/100]+" Hundred "+getNumber(num%100);
+    }
+    
+}

@@ -1,0 +1,42 @@
+122. Best Time to Buy and Sell Stock II
+
+Say you have an array for which the ith element is the price of a given stock on day i.
+
+Design an algorithm to find the maximum profit. You may complete as many transactions as you like (ie, buy one and sell one share of the stock multiple times). However, you may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).
+
+
+
+public class Solution {
+    public int MaxProfit(int[] prices) {
+        
+        int max = 0;
+        
+        int buy =0;
+        bool bought = false; 
+        for(int i=0;i<prices.Length;i++){
+            if(i==prices.Length-1){
+                if(bought)max+=prices[prices.Length-1]-buy;
+                else{
+                    break;
+                }
+            }
+            else if(prices[i+1]>prices[i]){
+                if(bought)continue;
+                else{
+                    bought=true;
+                    buy = prices[i];
+                }
+            }else if(prices[i+1]<prices[i]){
+                if(bought){
+                    bought=false;
+                    max+=(prices[i]-buy);
+                }else{
+                    continue;
+                }
+            }
+        }
+        return max;
+        
+        
+    }
+}

@@ -1,0 +1,39 @@
+285. Inorder Successor in BST
+
+Given a binary search tree and a node in it, find the in-order successor of that node in the BST.
+
+Note: If the given node has no in-order successor in the tree, return null.
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode InorderSuccessor(TreeNode root, TreeNode p) {
+        
+        TreeNode curr = root;
+        int val = p.val;
+        int nextval = Int32.MaxValue;
+        TreeNode next = null;
+        while(curr!=null){
+            if(curr.val<=p.val){
+                curr=curr.right;
+            }else if(curr.val>p.val){
+                if(curr.val<nextval){
+                    nextval=curr.val;
+                    next=curr;
+                }
+                curr=curr.left;
+            }
+            
+        }
+        return next;
+        
+    }
+}

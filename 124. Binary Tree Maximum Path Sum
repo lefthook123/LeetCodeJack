@@ -1,0 +1,74 @@
+124. Binary Tree Maximum Path Sum
+
+Given a binary tree, find the maximum path sum.
+
+For this problem, a path is defined as any sequence of nodes from some starting node to any node in the tree along the parent-child connections. The path does not need to go through the root.
+
+For example:
+Given the below binary tree,
+
+       1
+      / \
+     2   3
+Return 6.
+
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int MaxPathSum(TreeNode root) {
+        int[] args = new int[2]{Int32.MinValue,Int32.MinValue};
+        MaxPathSum(root,args);
+        return args[1];
+    }
+    
+    
+    //args[0]:  maxpath can be used
+    //args[1]: maxpath of all
+    public void MaxPathSum(TreeNode root,int[] args) {
+        
+        if(root==null){
+            args[0]=0;args[1]=Math.Max(args[1],0);
+        }
+        
+        int val = root.val;
+        int left=Int32.MinValue;
+        bool hasLeft=false;
+        bool hasRight=false;
+        int right=Int32.MinValue;
+        if(root.left!=null){
+            hasLeft=true;
+            MaxPathSum(root.left,args);
+            left = args[0];
+        }
+        if(root.right!=null){
+            hasRight=true;
+            MaxPathSum(root.right,args);
+            right = args[0];
+        }
+        if(hasLeft&&hasRight){
+            args[0] = Math.Max(Math.Max(left+val,right+val),val);
+            args[1] = Math.Max(Math.Max(args[0],left+val+right),args[1]);
+        }else if(hasLeft){
+            args[0] = Math.Max(left+val,val);
+            args[1] = Math.Max(args[0],args[1]);
+        }
+        else if(hasRight){
+            args[0] = Math.Max(right+val,val);
+            args[1] = Math.Max(args[0],args[1]);
+        }else{
+            args[0] = val;
+            args[1] = Math.Max(args[0],args[1]);
+        }
+        
+        
+    }
+}

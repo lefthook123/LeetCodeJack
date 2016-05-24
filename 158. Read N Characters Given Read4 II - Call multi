@@ -1,4 +1,4 @@
-157. Read N Characters Given Read4
+158. Read N Characters Given Read4 II - Call multiple times
 
 The API: int read4(char *buf) reads 4 characters at a time from a file.
 
@@ -7,7 +7,7 @@ The return value is the actual number of characters read. For example, it return
 By using the read4 API, implement the function int read(char *buf, int n) that reads n characters from the file.
 
 Note:
-The read function will only be called once for each test case.
+The read function may be called multiple times.
 
 
 
@@ -20,13 +20,23 @@ public class Solution : Reader4 {
      * @param n   Maximum number of characters to read
      * @return    The number of characters read
      */
+    public char[] temp = new char[4];  //0,1,2,3
+    public int start=4;  //start index to read from  
+    public int end=4;      //end index to read from 
+      
     public int Read(char[] buf, int n) {
-        char[] temp = new char[4];
-        
-        int read = 0;
-        int myread = 0;
+        int read=0;
+        int myread=0;
+        if(start<4&&start<=end){
+            int i=start;
+            while(start<=end&&read<n){
+                buf[start-i]=temp[start++];
+                read++;
+            }
+        }
+        if(read==n)return n;
         while(read+4<n){
-            myread=Read4(temp);
+            myread = Read4(temp);
             for(int i=0;i<myread;i++){
                 buf[read+i]=temp[i];
             }
@@ -36,17 +46,24 @@ public class Solution : Reader4 {
                 return read;
             }
         }
-        //read+4>=n
-        //read One more time
-        
-        myread=Read4(temp);
         int remain = n-read;
+        myread = Read4(temp);
         
-        int toread = Math.Min(remain,myread);
-        for(int i=0;i<toread;i++){
-            buf[read+i]=temp[i];
+        if(remain>=myread){
+            for(int i=0;i<myread;i++){
+                buf[read+i]=temp[i];
+            }
+            read+=myread;return read;
+        }else{
+            int i=0;
+            for(;i<remain;i++){
+                buf[read+i]=temp[i];
+            }
+            start=i;
+            end=myread-1;
+            return n;
+            
         }
-        return read+toread;
         
     }
 }
