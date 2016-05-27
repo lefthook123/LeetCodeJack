@@ -1,0 +1,38 @@
+80. Remove Duplicates from Sorted Array II
+
+
+Follow up for "Remove Duplicates":
+What if duplicates are allowed at most twice?
+
+For example,
+Given sorted array nums = [1,1,1,2,2,3],
+
+Your function should return length = 5, with the first five elements of nums being 1, 1, 2, 2 and 3. It doesn't matter what you leave beyond the new length.
+
+
+
+public class Solution {
+    public int RemoveDuplicates(int[] nums) {
+        if(nums.Length<3)return nums.Length;
+        int left = 1;
+        int right = 1;
+        int prev=nums[0];
+        int count=1;
+        while(right<nums.Length){
+            if(nums[right]==prev){
+                if(++count>2){
+                    right++;
+                }else{
+                    swap(left++,right++,nums);
+                }
+            }else{
+                count=1;prev=nums[right];
+                swap(right++,left++,nums);
+            }
+        }
+        return left;
+    }
+    public void swap(int i,int j,int[] nums){
+        int temp=nums[i];nums[i]=nums[j];nums[j]=temp;
+    }
+}

@@ -1,0 +1,43 @@
+230. Kth Smallest Element in a BST
+
+Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.
+
+Note: 
+You may assume k is always valid, 1 ≤ k ≤ BST's total elements.
+
+Follow up:
+What if the BST is modified (insert/delete operations) often and you need to find the kth smallest frequently? How would you optimize the kthSmallest routine?
+
+
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int KthSmallest(TreeNode root, int k) {
+        Stack<TreeNode> st = new Stack<TreeNode>();
+        while(root!=null){
+            st.Push(root);
+            root=root.left;
+        }
+        while(st.Count!=0){
+            TreeNode tn = st.Pop();
+            k--;
+            if(k==0)return tn.val;
+            tn=tn.right;
+            while(tn!=null){
+                st.Push(tn);
+                tn=tn.left;
+            }
+        }
+        return -1;
+        
+    }
+}

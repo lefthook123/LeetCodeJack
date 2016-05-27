@@ -1,0 +1,80 @@
+95. Unique Binary Search Trees II
+
+
+Given n, generate all structurally unique BST's (binary search trees) that store values 1...n.
+
+For example,
+Given n = 3, your program should return all 5 unique BST's shown below.
+
+   1         3     3      2      1
+    \       /     /      / \      \
+     3     2     1      1   3      2
+    /     /       \                 \
+   2     1         2                 3
+
+
+
+
+   /**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public IList<TreeNode> GenerateTrees(int n) {
+        
+
+
+        IList<TreeNode> result = new List<TreeNode>();
+        result=GenerateTrees(1,n);
+        return result;
+    }
+    
+    
+    
+    public IList<TreeNode> GenerateTrees(int start,int end) {
+ 
+        
+        IList<TreeNode> result = new List<TreeNode>();
+        if(start>end)return result;
+        for(int i=start;i<=end;i++){
+            
+            
+            IList<TreeNode> leftTrees =  GenerateTrees(start,i-1);
+            IList<TreeNode> rightTrees = GenerateTrees(i+1,end);
+            
+            if(leftTrees.Count==0&&rightTrees.Count==0)result.Add(new TreeNode(i));
+            else if(leftTrees.Count==0){
+                foreach(TreeNode tr in rightTrees){
+                    TreeNode root = new TreeNode(i);
+                    root.right=tr;
+                    result.Add(root);
+                }
+            }else if(rightTrees.Count==0){
+                foreach(TreeNode tr in leftTrees){
+                    TreeNode root = new TreeNode(i);
+                    root.left=tr;
+                    result.Add(root);
+                }
+            }else{
+                foreach(TreeNode tl in leftTrees){
+                    foreach(TreeNode tr in rightTrees){
+                        TreeNode root = new TreeNode(i);
+                        root.left=tl;root.right=tr;
+                        result.Add(root);
+                    }
+                    
+                }
+            }
+            
+        }
+        return result;
+        
+        
+        
+    }
+}

@@ -1,0 +1,42 @@
+85. Maximal Rectangle
+
+Given a 2D binary matrix filled with 0's and 1's, find the largest rectangle containing all ones and return its area.
+
+
+
+
+public class Solution {
+    public int MaximalRectangle(char[,] matrix) {
+        
+        int m = matrix.GetLength(0);
+        int n = matrix.GetLength(1);
+        
+        int[,] heights = new int[m,n+1];
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(matrix[i,j]=='1'){
+                    heights[i,j]=i>0?heights[i-1,j]+1:1;
+                }
+            }
+        }
+        
+        int max = 0;
+        for(int i=0;i<m;i++){
+            Stack<int> st = new Stack<int>();
+            for(int j=0;j<=n;j++){
+                if(st.Count==0||heights[i,st.Peek()]<=heights[i,j]){
+                    st.Push(j);
+                }else{
+                    while(st.Count>0&&heights[i,st.Peek()]>heights[i,j]){
+                        int h = heights[i,st.Pop()];
+                        int area = st.Count==0?j*h:(j-st.Peek()-1)*h;
+                        max=Math.Max(max,area);
+                    }
+                    st.Push(j);
+                }
+            }
+        }
+        return max;
+        
+    }
+}

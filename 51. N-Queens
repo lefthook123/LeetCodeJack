@@ -1,0 +1,69 @@
+51. N-Queens
+
+
+The n-queens puzzle is the problem of placing n queens on an n×n chessboard such that no two queens attack each other.
+
+Given an integer n, return all distinct solutions to the n-queens puzzle.
+
+Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space respectively.
+
+For example,
+There exist two distinct solutions to the 4-queens puzzle:
+
+[
+ [".Q..",  // Solution 1
+  "...Q",
+  "Q...",
+  "..Q."],
+
+ ["..Q.",  // Solution 2
+  "Q...",
+  "...Q",
+  ".Q.."]
+]
+
+
+
+public class Solution {
+    public IList<IList<string>> SolveNQueens(int n) {
+        HashSet<int> ht1 = new HashSet<int>();
+        HashSet<int> ht2 = new HashSet<int>(); //i+j
+        HashSet<int> ht3 = new HashSet<int>(); //i-j
+        IList<IList<string>> result = new List<IList<string>>();
+        IList<string> temp = new List<string>();
+        SolveNQueens(result,n,temp,0,ht1,ht2,ht3);
+        return result;
+    }
+    
+    
+    public void SolveNQueens(IList<IList<string>> result,int n,IList<string> temp,int row,HashSet<int> ht1,
+            HashSet<int> ht2,HashSet<int> ht3){
+        
+        if(row==n){
+            result.Add(new List<string>(temp));return;
+        }
+        
+        for(int i=0;i<n;i++){
+            
+            if(!ht1.Contains(i)&&!ht2.Contains(i+row)&&!ht3.Contains(i-row)){
+                ht1.Add(i);ht2.Add(i+row);ht3.Add(i-row);
+                temp.Add(buildstr(n,i));
+                SolveNQueens(result,n,temp,row+1,ht1,ht2,ht3);
+                ht1.Remove(i);ht2.Remove(i+row);ht3.Remove(i-row);
+                temp.RemoveAt(temp.Count-1);
+            }
+        }
+        
+        
+    }
+    
+    
+    //at index j it's 'Q'
+    public string buildstr(int n,int j){
+        string str = "";
+        for(int i=0;i<j;i++)str+=".";
+        str+="Q";
+        for(int i=j+1;i<n;i++)str+=".";
+        return str;
+    }
+}

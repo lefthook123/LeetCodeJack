@@ -1,0 +1,35 @@
+52. N-Queens II
+
+
+Follow up for N-Queens problem.
+
+Now, instead outputting board configurations, return the total number of distinct solutions.
+
+
+public class Solution {
+    public int TotalNQueens(int n) {
+        HashSet<int> ht1 = new HashSet<int>();
+        HashSet<int> ht2 = new HashSet<int>(); //i+j
+        HashSet<int> ht3 = new HashSet<int>(); //i-j
+        int count=0;
+        SolveNQueens(ref count,n,0,ht1,ht2,ht3);
+        return count;
+    }
+    public void SolveNQueens(ref int count,int n,int row,HashSet<int> ht1,
+            HashSet<int> ht2,HashSet<int> ht3){
+        
+        if(row==n){
+            count++;return;
+        }
+        for(int i=0;i<n;i++){
+            
+            if(!ht1.Contains(i)&&!ht2.Contains(i+row)&&!ht3.Contains(i-row)){
+                ht1.Add(i);ht2.Add(i+row);ht3.Add(i-row);
+                SolveNQueens(ref count,n,row+1,ht1,ht2,ht3);
+                ht1.Remove(i);ht2.Remove(i+row);ht3.Remove(i-row);
+            }
+        }
+        
+        
+    }
+}

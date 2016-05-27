@@ -1,0 +1,60 @@
+93. Restore IP Addresses
+
+Given a string containing only digits, restore it by returning all possible valid IP address combinations.
+
+For example:
+Given "25525511135",
+
+return ["255.255.11.135", "255.255.111.35"]. (Order does not matter)
+
+
+
+public class Solution {
+    public IList<string> RestoreIpAddresses(string s) {
+        IList<string> result =  new List<string>();
+        StringBuilder sb = new StringBuilder();
+        RestoreIpAddresses(result,sb,s,4,0);
+        return result;
+    }
+    
+    //count: the number of dots to be used
+    //sb.Length = 4+s.Length
+    //pos 
+    public void RestoreIpAddresses(IList<string> result,StringBuilder sb,string s,int count,int pos){
+        
+        if(count==0&&sb.Length==s.Length+4){
+            string str = sb.ToString();
+            result.Add(str.Substring(0,str.Length-1));return;
+        }
+        else if(count==0)return;   
+        else if(count>0&&pos==s.Length)return;
+        
+        
+        //count>0 and pos<s.Length
+        if(s[pos]=='0'){
+            sb.Append("0.");
+            RestoreIpAddresses(result,sb,s,count-1,pos+1);
+            sb.Length-=2;
+        }
+        else{
+            for(int i=1;i<=3&&pos+i<=s.Length;i++){
+                string str = s.Substring(pos,i);
+                if(i!=3){
+                    sb.Append(str);sb.Append(".");
+                    RestoreIpAddresses(result,sb,s,count-1,pos+i);
+                    sb.Length-=(i+1);
+                }else{
+                    int num = Convert.ToInt32(str);
+                    if(0<=num&&num<=255){
+                        sb.Append(str);sb.Append(".");
+                        RestoreIpAddresses(result,sb,s,count-1,pos+i);
+                        sb.Length-=4;
+                    }
+                }
+            }
+        }
+        
+        
+        
+    }
+}

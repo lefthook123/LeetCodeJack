@@ -1,0 +1,55 @@
+37. Sudoku Solver
+
+Write a program to solve a Sudoku puzzle by filling the empty cells.
+
+Empty cells are indicated by the character '.'.
+
+You may assume that there will be only one unique solution.
+
+
+
+public class Solution {
+    public void SolveSudoku(char[,] board) {
+        Dictionary<int,HashSet<int>> coldict = new Dictionary<int,HashSet<int>>();
+        Dictionary<int,HashSet<int>> rowdict = new Dictionary<int,HashSet<int>>();
+        Dictionary<int,HashSet<int>> sqdict = new Dictionary<int,HashSet<int>>();
+        
+        for(int i=0;i<9;i++){
+            coldict[i]=new HashSet<int>();rowdict[i]=new HashSet<int>();sqdict[i]=new HashSet<int>();
+        }
+        
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                if(board[i,j]!='.'){
+                    coldict[j].Add(board[i,j]-'0');rowdict[i].Add(board[i,j]-'0');sqdict[i/3*3+j/3].Add(board[i,j]-'0');
+                }
+            }
+        }
+        
+        
+        SolveSudoku(coldict,rowdict,sqdict,0,board);
+        
+    }
+    
+    public bool SolveSudoku(Dictionary<int,HashSet<int>> coldict,Dictionary<int,HashSet<int>> rowdict,Dictionary<int,HashSet<int>> sqdict,int pos,char[,] board){
+        
+        if(pos==81)return true;
+        
+        int i = pos/9; int j = pos%9;
+        if(board[i,j]!='.')return SolveSudoku(coldict,rowdict,sqdict,pos+1,board);
+        
+        for(int k=1;k<=9;k++){
+            
+            if(!coldict[j].Contains(k)&&!rowdict[i].Contains(k)&&!sqdict[i/3*3+j/3].Contains(k)){
+                coldict[j].Add(k);rowdict[i].Add(k);sqdict[i/3*3+j/3].Add(k);board[i,j]=Convert.ToChar(k+'0');
+                bool ret = SolveSudoku(coldict,rowdict,sqdict,pos+1,board);
+                if(ret==true)return true;
+                coldict[j].Remove(k);rowdict[i].Remove(k);sqdict[i/3*3+j/3].Remove(k);board[i,j]='.';
+            }
+            
+            
+        }
+        
+        return false;
+    }
+}
