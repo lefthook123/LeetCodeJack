@@ -1,0 +1,94 @@
+317. Shortest Distance from All Buildings
+
+
+You want to build a house on an empty land which reaches all buildings in the shortest amount of distance. You can only move up, down, left and right. You are given a 2D grid of values 0, 1 or 2, where:
+
+Each 0 marks an empty land which you can pass by freely.
+Each 1 marks a building which you cannot pass through.
+Each 2 marks an obstacle which you cannot pass through.
+For example, given three buildings at (0,0), (0,4), (2,2), and an obstacle at (0,2):
+
+1 - 0 - 2 - 0 - 1
+|   |   |   |   |
+0 - 0 - 0 - 0 - 0
+|   |   |   |   |
+0 - 0 - 1 - 0 - 0
+The point (1,2) is an ideal empty land to build a house, as the total travel distance of 3+3+1=7 is minimal. So return 7.
+
+Note:
+There will be at least one building. If it is not possible to build such house according to the above rules, return -1.
+
+
+
+
+public class Solution {
+    public int ShortestDistance(int[,] grid) {
+        
+        int row = grid.GetLength(0);  int col = grid.GetLength(1);
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if(grid[i,j]>0)grid[i,j]*=-1;
+            }
+        }
+        int numOfBuilding=0;
+        Dictionary<int,int> countdict = new Dictionary<int,int>();
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if(grid[i,j]==-1){
+                    numOfBuilding++;
+                    bfs(grid,i,j,row,col,countdict);
+                }
+            }
+        }
+        int min = Int32.MaxValue;
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if(grid[i,j]>0&&countdict.ContainsKey(i*col+j)&&countdict[i*col+j]==numOfBuilding){
+                    min=Math.Min(min,grid[i,j]);
+                }
+            }
+        }
+        return min==Int32.MaxValue?-1:min;
+    }
+    
+    public void bfs(int[,] grid,int i,int j,int row,int col,Dictionary<int,int> countdict){
+        
+        Queue<int> q = new Queue<int>();
+        q.Enqueue(i*col+j);
+        HashSet<int> visited = new HashSet<int>();
+        visited.Add(i*col+j);
+        int dist = 0;
+        while(q.Count>0){
+            dist++;
+            int size = q.Count;
+            for(int k=0;k<size;k++){
+                int pos = q.Dequeue();
+                if(!countdict.ContainsKey(pos)){
+                    countdict[pos]=0;
+                }
+                countdict[pos]++;
+                int m = pos/col; int n = pos%col;
+                if(m>0&&grid[m-1,n]>=0&&!visited.Contains((m-1)*col+n)){
+                    grid[m-1,n]+=dist;
+                    q.Enqueue((m-1)*col+n);
+                    visited.Add((m-1)*col+n);
+                }
+                if(m<row-1&&grid[m+1,n]>=0&&!visited.Contains((m+1)*col+n)){
+                    grid[m+1,n]+=dist;
+                    q.Enqueue((m+1)*col+n);
+                    visited.Add((m+1)*col+n);
+                }
+                if(n>0&&grid[m,n-1]>=0&&!visited.Contains(m*col+n-1)){
+                    grid[m,n-1]+=dist;
+                    q.Enqueue(m*col+n-1);
+                    visited.Add(m*col+n-1);
+                }
+                if(n<col-1&&grid[m,n+1]>=0&&!visited.Contains(m*col+n+1)){
+                    grid[m,n+1]+=dist;
+                    q.Enqueue(m*col+n+1);
+                    visited.Add(m*col+n+1);
+                }
+            }
+        }
+    }
+}

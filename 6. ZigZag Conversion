@@ -1,15 +1,15 @@
-34. Search for a Range
+6. ZigZag Conversion
 
-Given a sorted array of integers, find the starting and ending position of a given target value.
+The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
 
-Your algorithm's runtime complexity must be in the order of O(log n).
+P   A   H   N
+A P L S I I G
+Y   I   R
+And then read line by line: "PAHNAPLSIIGYIR"
+Write the code that will take a string and make this conversion given a number of rows:
 
-If the target is not found in the array, return [-1, -1].
-
-For example,
-Given [5, 7, 7, 8, 8, 10] and target value 8,
-return [3, 4].
-
+string convert(string text, int nRows);
+convert("PAYPALISHIRING", 3) should return "PAHNAPLSIIGYIR".
 
 
 

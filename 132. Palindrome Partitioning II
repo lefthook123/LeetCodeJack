@@ -1,0 +1,49 @@
+132. Palindrome Partitioning II
+
+
+Given a string s, partition s such that every substring of the partition is a palindrome.
+
+Return the minimum cuts needed for a palindrome partitioning of s.
+
+For example, given s = "aab",
+Return 1 since the palindrome partitioning ["aa","b"] could be produced using 1 cut.
+
+
+
+public class Solution {
+    public int MinCut(string s) {
+        int len=s.Length;
+        bool[,] dp = new bool[len,len];
+        int[] dpcut = new int[len];  //cut[i]: min cut needed for index 0 to index i  
+        //O(n*n)
+        for(int diff=0;diff<len;diff++){
+            for(int i=0;i<len-diff;i++){
+                int j = i+diff;
+                if(diff==0)dp[i,j]=true;
+                else if(diff==1)dp[i,j]=s[i]==s[j];
+                else{
+                    dp[i,j]=dp[i+1,j-1]&&s[i]==s[j];
+                }
+            }
+        }
+        
+        //O(n*n)
+        for(int i=0;i<len;i++){
+            if(dp[0,i]){
+                dpcut[i]=0;continue;
+            }
+            int min = i;
+            
+            for(int j=0;j<i;j++){
+                if(dp[j+1,i]){
+                    min=Math.Min(min,dpcut[j]+1);
+                }
+            }
+            dpcut[i]=min;
+        }
+        return dpcut[len-1];
+        
+        
+        
+    }
+}
