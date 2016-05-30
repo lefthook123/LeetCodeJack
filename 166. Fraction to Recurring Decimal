@@ -1,1 +1,65 @@
 166. Fraction to Recurring Decimal
+
+Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.
+
+If the fractional part is repeating, enclose the repeating part in parentheses.
+
+For example,
+
+Given numerator = 1, denominator = 2, return "0.5".
+Given numerator = 2, denominator = 1, return "2".
+Given numerator = 2, denominator = 3, return "0.(6)".
+
+
+
+public class Solution {
+    public string FractionToDecimal(int numerator, int denominator) {
+        if(numerator==0)return "0";
+        int sign=1;
+        sign=((numerator>0&&denominator<0)||(numerator<0&&denominator>0))?-1:1;
+        
+        long longnumerator=Math.Abs((long)numerator);
+        long longdenominator=Math.Abs((long)denominator);
+        long beforeDot = 0;
+        if(longnumerator>=longdenominator){
+            if(longnumerator%longdenominator==0)return (longnumerator/longdenominator*sign).ToString();
+            beforeDot = longnumerator/longdenominator;
+            longnumerator=longnumerator%longdenominator;
+        }
+        longnumerator*=10;
+        List<long> lst = new List<long>();
+        Dictionary<long,long> dict = new Dictionary<long,long>();
+        string res = beforeDot.ToString()+FractionToDecimal(longnumerator,longdenominator,lst,dict);
+        if(sign==-1)res="-"+res;
+        return res;
+        
+    }
+    
+    //dict: key numerator  value index
+    
+    public string FractionToDecimal(long numerator, long denominator,List<long> lst,Dictionary<long,long> dict){
+        if(dict.ContainsKey(numerator)){
+            StringBuilder sb = new StringBuilder();
+            sb.Append(".");
+            int i=0;
+            for(;i<dict[numerator];i++){
+                sb.Append(lst[i]);
+            }
+            sb.Append('(');
+            for(;i<lst.Count;i++){
+                sb.Append(lst[i]);
+            }
+            sb.Append(')');return sb.ToString();
+        }
+        if(numerator==0){
+            StringBuilder sb = new StringBuilder();sb.Append('.');
+            foreach(var item in lst)sb.Append(item);
+            return sb.ToString();
+        }
+        dict[numerator]=lst.Count;
+        lst.Add(numerator/denominator);
+        numerator%=denominator;
+        numerator*=10;
+        return FractionToDecimal(numerator,denominator,lst,dict);
+    }
+}

@@ -9,3 +9,70 @@ click to show more practice.
 
 More practice:
 If you have figured out the O(n) solution, try coding another solution of which the time complexity is O(n log n).
+
+
+
+
+public int MinSubArrayLen(int s, int[] nums) {
+        int len = nums.Length;
+        
+        int left = 0;
+        int right = 0;
+        int sum=0;
+        int min=Int32.MaxValue;
+        while(right<len){
+            
+            sum+=nums[right];
+            while(sum>=s){
+                min = Math.Min(min,right-left+1);
+                sum-=nums[left++];
+            }
+            right++;
+        }
+        return min==Int32.MaxValue?0:min;    
+        
+    }
+
+
+
+    public class Solution {
+    public int MinSubArrayLen(int s, int[] nums) {
+        int len = nums.Length;
+        int[] sums = new int[len+1];
+        
+        for(int i=1;i<=len;i++){
+            sums[i]=sums[i-1]+nums[i-1];   //sums[i]:  sum of i elements from 0 to i-1
+        }
+        
+        int min = Int32.MaxValue;
+        
+        for(int i=0;i<len;i++){
+            
+            int index = binarySearch(sums,s+sums[i],i+1,len);
+            if(index>0){
+                min=Math.Min(min,index-i);
+            }
+            
+        }
+        return min==Int32.MaxValue?0:min;
+        
+    }
+    
+    
+    public int binarySearch(int[] sums,int target,int left,int right){
+        
+        //left<=right
+        //find the smallest element larger or equals to target
+        while(left<right){
+            
+            int mid = left+(right-left)/2;
+            if(sums[mid]>=target){
+                right=mid;
+            }else{
+                left=mid+1;
+            }
+        }
+        return sums[right]>=target?right:-1;
+    }
+    
+}

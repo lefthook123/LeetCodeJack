@@ -13,3 +13,41 @@ return [3, 4].
 
 
 
+public class Solution {
+    public int[] SearchRange(int[] nums, int target) {
+        
+        //find left bound;
+        
+        int left=0,right=nums.Length-1,leftbound=-1,rightbound=-1;
+        //find leftbound
+        // move the right index towards left
+        while(left<right){
+            int mid = left+(right-left)/2;
+            if(nums[mid]>=target){
+                right=mid;
+            }else{
+                left=mid+1;
+            }
+        }
+        if(nums[right]!=target)return new int[]{-1,-1};
+        leftbound=right;left=right;right=nums.Length-1;
+        //find rightbound
+        //move left index towards right
+        //mid is always >= target
+        while(left<right){
+            int mid = left+(right-left)/2;
+            if(nums[mid]==target){
+                left=mid+1;
+            }else{
+                right=mid-1;
+            }
+        }
+        if(nums[left]==target){
+            rightbound=left;
+        }else{
+            rightbound=left-1;
+        }
+        return new int[]{leftbound,rightbound};
+
+    }
+}

@@ -6,3 +6,36 @@ You may assume each number in the sequence is unique.
 
 Follow up:
 Could you do it using only constant space complexity?
+
+
+
+public class Solution {
+    public bool VerifyPreorder(int[] preorder) {
+        int low = Int32.MinValue;
+        
+        Stack<int> st = new Stack<int>();
+        for(int i=0;i<preorder.Length;i++){
+            if(preorder[i]<low)return false;
+            while(st.Count>0&&st.Peek()<preorder[i]){
+                low=st.Pop();
+            }
+            st.Push(preorder[i]);
+        }
+        return true;
+    }
+    
+    public bool VerifyPreorder(int[] preorder,int left,int right){
+        if(left>=right)return true;
+        
+        int i=left+1;
+        int mid = right+1; //root of right tree
+        for(;i<=right;i++){
+            if(preorder[i]>preorder[left]&&mid==right+1){
+                mid=i;
+            }
+            if(mid!=right+1&&preorder[i]<preorder[left])return false;
+        }
+        
+        return VerifyPreorder(preorder,left+1,mid-1)&&VerifyPreorder(preorder,mid,right);
+    }
+}

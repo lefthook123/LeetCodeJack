@@ -1,0 +1,65 @@
+302. Smallest Rectangle Enclosing Black Pixels
+
+
+An image is represented by a binary matrix with 0 as a white pixel and 1 as a black pixel. The black pixels are connected, i.e., there is only one black region. Pixels are connected horizontally and vertically. Given the location (x, y) of one of the black pixels, return the area of the smallest (axis-aligned) rectangle that encloses all black pixels.
+
+For example, given the following image:
+
+[
+  "0010",
+  "0110",
+  "0100"
+]
+and x = 0, y = 2,
+Return 6.
+
+
+
+//dfs
+public class Solution {
+    public int MinArea(char[,] image, int x, int y) {
+        
+        
+        
+        int row = image.GetLength(0);
+        int col = image.GetLength(1);
+        int left = col-1;  //find min left
+        int right = 0;
+        int top = row-1;
+        int bot = 0;
+        int pos = x*col+y;
+        
+        Stack<int> st = new Stack<int>();
+        st.Push(pos);
+        while(st.Count>0){
+            pos = st.Pop();
+            int i = pos/col;int j=pos%col;
+            image[i,j]='0';
+            left = Math.Min(left,j);
+            right=Math.Max(j,right);
+            top = Math.Min(i,top);
+            bot = Math.Max(i,bot);
+            
+            
+            if(i>0&&image[i-1,j]=='1'){
+                st.Push((i-1)*col+j);
+            }
+            if(i<row-1&&image[i+1,j]=='1'){
+                st.Push((i+1)*col+j);
+            }
+            if(j>0&&image[i,j-1]=='1'){
+                st.Push((i)*col+j-1);
+            }
+            if(j<col-1&&image[i,j+1]=='1'){
+                st.Push((i)*col+j+1);
+            }
+            
+        }
+        
+        return (right+1-left)*(bot+1-top);
+            
+    }
+    
+    
+    
+}

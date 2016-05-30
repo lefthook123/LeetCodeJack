@@ -1,0 +1,51 @@
+179. Largest Number
+
+
+Given a list of non negative integers, arrange them such that they form the largest number.
+
+For example, given [3, 30, 34, 5, 9], the largest formed number is 9534330.
+
+Note: The result may be very large, so you need to return a string instead of an integer.
+
+
+
+public class Solution {
+    public string LargestNumber(int[] nums) {
+        
+        List<int> lst = nums.ToList();
+        lst.Sort((a,b)=>Comparer(a,b));
+        StringBuilder sb = new StringBuilder();
+        
+        for(int i=0;i<lst.Count;i++){
+            sb.Append(lst[i]);
+        }
+        string res= sb.ToString();
+        int k=0;
+        for(;k<res.Length-1;k++){
+            if(res[k]!='0')break;
+        }
+        return res.Substring(k);
+    }
+    
+    
+    
+    public int Comparer(int num1,int num2){
+        string s1 = num1.ToString();
+        string s2 = num2.ToString();
+        
+        string s1s2 = s1+s2;
+        string s2s1 = s2+s1;
+        
+
+        
+        int i=0;
+        
+        while(i<s1s2.Length){
+            if(s1s2[i]>s2s1[i])return -1;
+            if(s1s2[i]<s2s1[i])return 1;
+            i++;
+        }
+        return 0;
+    }
+    
+}

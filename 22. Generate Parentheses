@@ -7,3 +7,37 @@ For example, given n = 3, a solution set is:
 "((()))", "(()())", "(())()", "()(())", "()()()"
 
 
+public class Solution {
+    public IList<string> GenerateParenthesis(int n) {
+        IList<string> result = new List<string>();
+        StringBuilder sb = new StringBuilder();
+        GenerateParenthesis(result,0,0,n,sb);
+        return result;
+    }
+    
+    //open: num of open used
+    //close: num of close used
+    //open should alwasy >= close
+    public void GenerateParenthesis(IList<string> result,int open,int close,int n,StringBuilder sb){
+        if(open==n&&close==n){
+            result.Add(sb.ToString());return;
+        }
+        if(open==close){
+            sb.Append("(");
+            GenerateParenthesis(result,open+1,close,n,sb);
+            sb.Length-=1;
+        }else{
+            //open>close
+            sb.Append(")");
+            GenerateParenthesis(result,open,close+1,n,sb);
+            sb.Length-=1;
+            if(open<n){
+                sb.Append("(");
+                GenerateParenthesis(result,open+1,close,n,sb);
+                sb.Length-=1;
+            }
+            
+        }
+        
+    }
+}
